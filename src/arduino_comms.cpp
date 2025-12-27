@@ -58,14 +58,20 @@ void ArduinoComms::setPidValues(float k_p, float k_d, float k_i, float k_o)
 
 std::string ArduinoComms::sendMsg(const std::string &msg_to_send, bool print_output)
 {
+  try {
     serial_conn_.write(msg_to_send);
-    std::string response = serial_conn_.readline();
 
-    if (print_output)
-    {
-        std::cout << "[SERIAL] Sent: " << msg_to_send;
-        std::cout << "[SERIAL] Received: " << response << std::endl;
+    // ép đọc đến newline, timeout an toàn
+    std::string response = serial_conn_.readline(256, "\n");
+
+    if (print_output) {
+      std::cout << "[SERIAL] Sent: " << msg_to_send;
+      std::cout << "[SERIAL] Received: " << response << std::endl;
     }
-
     return response;
+  }
+  catch (const std::exception &e) {
+    std::cerr << "[SERIAL ERROR] " << e.what() << std::endl;
+    return "0 0";   // fallback để ROS không chết
+  }
 }
