@@ -26,13 +26,20 @@ void ArduinoComms::readEncoderValues(int &val_1, int &val_2)
 {
     std::string response = sendMsg("e\r");
 
-    std::string delimiter = " ";
-    size_t del_pos = response.find(delimiter);
-    std::string token_1 = response.substr(0, del_pos);
-    std::string token_2 = response.substr(del_pos + delimiter.length());
+    // 1) Lọc ký tự: giữ số, dấu âm, và biến mọi thứ khác thành khoảng trắng
+    for (char &c : response) {
+        if (!( (c >= '0' && c <= '9') || c == '-' )) {
+            c = ' ';
+        }
+    }
 
-    val_1 = std::atoi(token_1.c_str());
-    val_2 = std::atoi(token_2.c_str());
+    // 2) Đọc 2 số nguyên đầu tiên trong chuỗi
+    std::stringstream ss(response);
+    if (!(ss >> val_1 >> val_2)) {
+        // Nếu parse fail thì trả 0,0 để tránh rác
+        val_1 = 0;
+        val_2 = 0;
+    }
 }
 
 void ArduinoComms::setMotorValues(int val_1, int val_2)
@@ -56,8 +63,8 @@ std::string ArduinoComms::sendMsg(const std::string &msg_to_send, bool print_out
 
     if (print_output)
     {
-        // RCLCPP_INFO_STREAM(logger_,"Sent: " << msg_to_send);
-        // RCLCPP_INFO_STREAM(logger_,"Received: " << response);
+        RCLCPP_INFO_STREAM(logger_,"Sent: " << msg_to_send);
+        RCLCPP_INFO_STREAM(logger_,"Received: " << response);
     }
 
     return response;
