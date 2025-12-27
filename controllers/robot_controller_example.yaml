@@ -1,15 +1,15 @@
 controller_manager:
   ros__parameters:
-    update_rate: 50  # Hz
+    update_rate: 50
 
-    diff_controller:
+    diff_cont:
       type: diff_drive_controller/DiffDriveController
 
     joint_state_broadcaster:
       type: joint_state_broadcaster/JointStateBroadcaster
 
 
-diff_controller:
+diff_cont:
   ros__parameters:
     publish_rate: 50.0
 
@@ -22,15 +22,12 @@ diff_controller:
 
     base_frame_id: base_link
 
-    # ===== ODOM (QUAN TRỌNG) =====
     odom_frame_id: odom
     enable_odom_tf: true
     odom_topic: /odom
 
-    # Nếu bạn muốn publish thêm TF base_link -> base_footprint thì mới dùng
-    # base_frame_id thường là base_link là đủ
-
     use_stamped_vel: false
+
 
     # ===== LIMITS (để false thì ignore các max=0.0 ở dưới) =====
     linear.x.has_velocity_limits: false
