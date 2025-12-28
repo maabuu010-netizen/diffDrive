@@ -18,7 +18,7 @@ diff_cont:
     wheels_per_side: 1
 
     wheel_separation: 0.125
-    wheel_radius: 0.0325
+    wheel_radius: 0.0195
 
     base_frame_id: base_link
 
