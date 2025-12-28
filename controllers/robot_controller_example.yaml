@@ -17,8 +17,8 @@ diff_cont:
     right_wheel_names: ['right_wheel_joint']
     wheels_per_side: 1
 
-    wheel_separation: 0.125
-    wheel_radius: 0.0195
+    wheel_separation: 0.297
+    wheel_radius: 0.033
 
     base_frame_id: base_link
 
